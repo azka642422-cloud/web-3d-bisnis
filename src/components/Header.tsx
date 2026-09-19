@@ -78,7 +78,9 @@ export function Header({ onOpenConsultation }: HeaderProps) {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-lg"
-            aria-label="Toggle Menu"
+            aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -88,7 +90,7 @@ export function Header({ onOpenConsultation }: HeaderProps) {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 right-0 bg-[#0c1220] border-b border-amber-500/20 shadow-2xl py-6 px-6 animate-fadeIn">
-          <nav className="flex flex-col gap-4">
+          <nav id="mobile-navigation" className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
