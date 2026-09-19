@@ -58,7 +58,7 @@ export function MusicSection() {
               <ul className="space-y-4 text-sm text-slate-300">
                 <li className="flex items-start gap-3">
                   <span className="w-2 h-2 rounded-full bg-amber-400 mt-2"></span>
-                  <span>Pengaturan putar otomatis saat halaman dibuka di browser penerima.</span>
+                  <span>Musik dapat dimulai setelah penerima berinteraksi dengan halaman, sesuai aturan autoplay browser.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-2 h-2 rounded-full bg-amber-400 mt-2"></span>
@@ -66,7 +66,7 @@ export function MusicSection() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-2 h-2 rounded-full bg-amber-400 mt-2"></span>
-                  <span>Penyesuaian nada dan durasi agar pas dengan alur cerita kenangan.</span>
+                  <span>Pemilihan backsound disesuaikan dengan suasana cerita dan opsi penggunaan audio yang tersedia.</span>
                 </li>
               </ul>
             </div>
