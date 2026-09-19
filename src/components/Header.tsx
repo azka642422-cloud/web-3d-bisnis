@@ -67,6 +67,7 @@ export function Header({ onOpenConsultation }: HeaderProps) {
           {/* Primary CTA */}
           <div className="hidden sm:flex items-center gap-3">
             <button
+              type="button"
               onClick={onOpenConsultation}
               className="px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-sm shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
