@@ -1,0 +1,6 @@
+{
+  "name": "Lumina Gift",
+  "description": "Hadiah digital interaktif berisi foto, pesan personal, musik, dan sentuhan animasi 3D untuk orang spesialmu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

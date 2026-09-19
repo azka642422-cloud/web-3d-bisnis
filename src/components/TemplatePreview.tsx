@@ -1,0 +1,165 @@
+import { useState } from 'react';
+import { Eye, Check, Sparkles, X } from 'lucide-react';
+import { templates } from '../data/templates';
+import { Template } from '../types';
+
+interface TemplatePreviewProps {
+  onSelectTemplate: (templateTitle: string) => void;
+}
+
+export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
+  const [modalTemplate, setModalTemplate] = useState<Template | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handlePreviewClick = (tpl: Template) => {
+    setModalTemplate(tpl);
+  };
+
+  const handleChooseTemplate = (tplTitle: string) => {
+    onSelectTemplate(tplTitle);
+    setModalTemplate(null);
+    setToastMessage(`Template "${tplTitle}" berhasil dipilih untuk konsultasi!`);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  return (
+    <section id="template" className="py-24 bg-[#0c101c] relative border-t border-slate-800/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 bg-amber-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-medium text-sm flex items-center gap-3 animate-fadeIn">
+            <Sparkles className="w-4 h-4" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-3 block">
+            PILIHAN GAYA & TEMPLATE
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight font-['Playfair_Display',serif] mb-4">
+            Pilih Cerita yang Cocok
+          </h2>
+          <p className="text-sm sm:text-base text-slate-300">
+            Setiap template dirancang dengan estetika sinematik dan nuansa warna yang sesuai dengan emosi momenmu.
+          </p>
+        </div>
+
+        {/* Templates Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {templates.map((tpl) => (
+            <div
+              key={tpl.id}
+              className="relative rounded-2xl bg-[#131b2e] border border-amber-500/20 shadow-xl overflow-hidden flex flex-col justify-between hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1.5"
+            >
+              {/* Top Accent Gradient */}
+              <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${tpl.accentColor}`}></div>
+
+              <div className="p-6">
+                {/* Badge */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] font-mono tracking-wider text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-1 rounded-full uppercase font-semibold">
+                    {tpl.badge}
+                  </span>
+                  <span className="text-xs text-slate-400 font-medium">
+                    {tpl.suitableFor}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-xl font-bold text-white mb-2 font-['Playfair_Display',serif]">
+                  {tpl.title}
+                </h3>
+
+                {/* Theme subtext */}
+                <p className="text-xs text-amber-200/80 font-medium mb-3">
+                  Visual: {tpl.visualTheme}
+                </p>
+
+                {/* Description */}
+                <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                  {tpl.description}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="p-6 pt-0 grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => handlePreviewClick(tpl)}
+                  className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-slate-700"
+                >
+                  <Eye className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Lihat Preview</span>
+                </button>
+                <button
+                  onClick={() => handleChooseTemplate(tpl.title)}
+                  className="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-amber-500/20"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Pilih Template</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      {/* Modal Demo Segera Hadir */}
+      {modalTemplate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-md bg-[#131b2e] border border-amber-500/30 rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl">
+            <button
+              onClick={() => setModalTemplate(null)}
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800/80"
+              aria-label="Close modal"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+              <Sparkles className="w-6 h-6" />
+            </div>
+
+            <h3 className="text-2xl font-bold font-['Playfair_Display',serif] text-white mb-2">
+              {modalTemplate.title}
+            </h3>
+            <p className="text-xs text-amber-300 font-mono mb-4">
+              {modalTemplate.suitableFor}
+            </p>
+
+            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+              {modalTemplate.description}
+            </p>
+
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-6 text-center">
+              <span className="text-sm font-semibold text-amber-200">
+                ✨ Demo interaktif lengkap segera hadir!
+              </span>
+              <p className="text-xs text-slate-400 mt-1">
+                Kamu sudah bisa memilih template ini untuk pembuatan hadiah digital personalmu sekarang.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setModalTemplate(null)}
+                className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors"
+              >
+                Tutup
+              </button>
+              <button
+                onClick={() => handleChooseTemplate(modalTemplate.title)}
+                className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-500/20"
+              >
+                Pilih Template Ini
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
