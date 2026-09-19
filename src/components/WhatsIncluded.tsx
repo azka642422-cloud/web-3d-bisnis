@@ -9,7 +9,7 @@ export function WhatsIncluded() {
     { title: 'Background music', desc: 'Alunan melodi pengiring suasana yang hangat' },
     { title: 'Request backsound', desc: 'Konsultasi pilihan lagu atau musik khusus' },
     { title: 'Link personal', desc: 'Tautan unik siap dibagikan via WhatsApp' },
-    { title: 'Mobile friendly', desc: 'Optimal dan mulus dibuka di semua jenis smartphone' },
+    { title: 'Mobile friendly', desc: 'Dirancang responsif untuk browser smartphone modern' },
   ];
 
   return (
