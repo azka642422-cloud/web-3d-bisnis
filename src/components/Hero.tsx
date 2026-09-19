@@ -1,6 +1,7 @@
 import { ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
 import { HeroVisual } from './HeroVisual';
 import { siteConfig } from '../config/site';
+import { formatIDR, pricingConfig } from '../config/pricing';
 
 interface HeroProps {
   onOpenConsultation: () => void;
@@ -76,7 +77,7 @@ export function Hero({ onOpenConsultation }: HeroProps) {
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-                <span>Promo Launching Rp10.000</span>
+                <span>Promo Launching {formatIDR(pricingConfig.basePrice)}</span>
               </div>
             </div>
 
