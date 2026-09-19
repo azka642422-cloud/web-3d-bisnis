@@ -1,19 +1,11 @@
 import { Check, Sparkles, ArrowRight } from 'lucide-react';
-import { pricingConfig } from '../config/pricing';
-import { siteConfig } from '../config/site';
+import { formatIDR, pricingConfig } from '../config/pricing';
 
 interface PricingSectionProps {
   onOpenConsultation: () => void;
 }
 
 export function PricingSection({ onOpenConsultation }: PricingSectionProps) {
-  const handleWhatsAppPricing = () => {
-    const text = encodeURIComponent(
-      `Halo, saya ingin memesan paket ${pricingConfig.promoLabel} seharga Rp10.000 di ${siteConfig.brandName}. Mohon informasi selanjutnya.`
-    );
-    window.open(`https://wa.me/${siteConfig.whatsappNumber}?text=${text}`, '_blank');
-  };
-
   const features = [
     '1 Web hadiah digital interaktif',
     'Pilihan template sinematik',
@@ -63,7 +55,7 @@ export function PricingSection({ onOpenConsultation }: PricingSectionProps) {
           <div className="mb-8 pb-8 border-b border-slate-800 flex items-baseline gap-2">
             <span className="text-xs text-slate-400 font-medium">Mulai dari</span>
             <span className="text-4xl sm:text-5xl font-extrabold text-amber-300 font-['Playfair_Display',serif]">
-              Rp10.000
+              {formatIDR(pricingConfig.basePrice)}
             </span>
             <span className="text-xs text-slate-400">/ web gift</span>
           </div>
@@ -71,7 +63,7 @@ export function PricingSection({ onOpenConsultation }: PricingSectionProps) {
           {/* Additional info badge */}
           <div className="mb-8 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200 flex items-center justify-between">
             <span>Penambahan foto berikutnya:</span>
-            <span className="font-bold text-amber-300">+10 foto — Rp5.000</span>
+            <span className="font-bold text-amber-300">+{pricingConfig.additionalPhotoBlock} foto — {formatIDR(pricingConfig.additionalPhotoBlockPrice)}</span>
           </div>
 
           {/* Features list */}
