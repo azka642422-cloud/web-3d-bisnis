@@ -66,6 +66,29 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
     return <Gem className="w-8 h-8" />;
   };
 
+  const previewPhotos: Record<string, { src: string; alt: string }[]> = {
+    'sweet-memories': [
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan saat matahari terbenam' },
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan dalam suasana hangat' },
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh portrait untuk susunan galeri' },
+    ],
+    'graduation-night': [
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto wisuda' },
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pencapaian bersama orang terdekat' },
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto kenangan untuk cerita wisuda' },
+    ],
+    'birthday-universe': [
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh portrait untuk kejutan ulang tahun' },
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto kenangan bersama' },
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto perayaan' },
+    ],
+    'our-story': [
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan pernikahan' },
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan untuk perjalanan cerita' },
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh portrait pelengkap cerita' },
+    ],
+  };
+
   const handleChooseTemplate = (tplTitle: string) => {
     onSelectTemplate(tplTitle);
     setModalTemplate(null);
@@ -139,6 +162,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
               {/* Action Buttons */}
               <div className="p-6 pt-0 grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={() => handlePreviewClick(tpl)}
                   className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-slate-700"
                 >
@@ -146,6 +170,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
                   <span>Lihat Preview</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleChooseTemplate(tpl.title)}
                   className="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-amber-500/20"
                 >
@@ -206,10 +231,21 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
                   <p className="font-semibold text-white">{modalTemplate.visualTheme}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-2 mb-4" aria-hidden="true">
-                <div className="aspect-[4/5] rounded-lg bg-white/10 border border-white/10 rotate-[-3deg]"></div>
-                <div className="aspect-[4/5] rounded-lg bg-amber-300/10 border border-amber-300/20 translate-y-2"></div>
-                <div className="aspect-[4/5] rounded-lg bg-white/10 border border-white/10 rotate-[3deg]"></div>
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {(previewPhotos[modalTemplate.id] ?? previewPhotos['sweet-memories']).map((photo, index) => (
+                  <div
+                    key={photo.src + index}
+                    className={`aspect-[4/5] overflow-hidden rounded-lg border border-white/15 shadow-lg ${index === 0 ? 'rotate-[-3deg]' : index === 1 ? 'translate-y-2' : 'rotate-[3deg]'}`}
+                  >
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                ))}
               </div>
               <p className="text-sm text-slate-200 leading-relaxed">{modalTemplate.description}</p>
             </div>
