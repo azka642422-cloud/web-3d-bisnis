@@ -32,6 +32,7 @@ export function Footer() {
 
             <div className="pt-2">
               <button
+                type="button"
                 onClick={handleWhatsAppFooter}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all"
               >
