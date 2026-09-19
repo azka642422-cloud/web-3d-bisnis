@@ -40,6 +40,7 @@ export function MusicSection() {
             </div>
 
             <button
+              type="button"
               onClick={handleMusicWhatsApp}
               className="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-bold transition-all shadow-md inline-flex items-center gap-2"
             >
