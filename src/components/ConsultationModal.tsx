@@ -180,7 +180,7 @@ export function ConsultationModal({
               min="1"
               max="50"
               value={photoCount}
-              onChange={(e) => setPhotoCount(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => setPhotoCount(Math.min(50, Math.max(1, parseInt(e.target.value) || 1)))}
               className="w-full bg-[#0c1220] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
             />
           </div>
@@ -227,7 +227,7 @@ export function ConsultationModal({
         </button>
 
         <p className="text-[11px] text-slate-400 text-center mt-4">
-          Anda akan diarahkan ke WhatsApp resmi {siteConfig.whatsappDisplay} dengan pesan terformat otomatis.
+          Kamu akan diarahkan ke WhatsApp resmi {siteConfig.whatsappDisplay} dengan pesan terformat otomatis.
         </p>
 
       </div>
