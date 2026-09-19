@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Heart, Sparkles, Music, Play, Layers } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, Sparkles, Play, Layers } from 'lucide-react';
 
 export function HeroVisual() {
-  const [activeTab, setActiveTab] = useState<'preview' | '3d'>('preview');
-  const [isHovered, setIsHovered] = useState(false);
-
   // Simulated floating tilt effect on mouse move
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -41,7 +38,7 @@ export function HeroVisual() {
             <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
             <span className="ml-2 text-xs text-slate-400 font-mono tracking-wider">
-              lumina.gift/preview/our-story
+              contoh.link/hadiah/ceritamu
             </span>
           </div>
           <div className="flex items-center gap-2 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
