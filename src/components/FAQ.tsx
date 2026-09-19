@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, HelpCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { faqData } from '../data/faq';
 
 export function FAQ() {
@@ -38,7 +38,10 @@ export function FAQ() {
                 <button
                   onClick={() => toggleAccordion(idx)}
                   className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                  type="button"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${idx}`}
+                  id={`faq-question-${idx}`}
                 >
                   <span className="text-base sm:text-lg font-bold text-white font-['Playfair_Display',serif]">
                     {item.question}
@@ -53,7 +56,12 @@ export function FAQ() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-2 text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 animate-fadeIn">
+                  <div
+                    id={`faq-answer-${idx}`}
+                    role="region"
+                    aria-labelledby={`faq-question-${idx}`}
+                    className="px-6 pb-6 pt-2 text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 animate-fadeIn"
+                  >
                     {item.answer}
                   </div>
                 )}

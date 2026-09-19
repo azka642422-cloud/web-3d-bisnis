@@ -1,18 +1,10 @@
 import { MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
-import { siteConfig } from '../config/site';
 
 interface FinalCTAProps {
   onOpenConsultation: () => void;
 }
 
 export function FinalCTA({ onOpenConsultation }: FinalCTAProps) {
-  const handleWhatsAppFinal = () => {
-    const text = encodeURIComponent(
-      `Halo, saya ingin konsultasi gratis mengenai pembuatan Web Hadiah 3D di ${siteConfig.brandName}.`
-    );
-    window.open(`https://wa.me/${siteConfig.whatsappNumber}?text=${text}`, '_blank');
-  };
-
   return (
     <section className="py-24 bg-gradient-to-b from-[#090D16] to-[#0c101c] relative overflow-hidden border-t border-slate-800/60">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.1)_0,transparent_75%)] pointer-events-none"></div>
@@ -34,11 +26,11 @@ export function FinalCTA({ onOpenConsultation }: FinalCTAProps) {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
-            onClick={handleWhatsAppFinal}
+            onClick={onOpenConsultation}
             className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-base shadow-xl shadow-amber-500/30 flex items-center justify-center gap-3 transition-all hover:-translate-y-0.5"
           >
             <MessageCircle className="w-5 h-5 text-emerald-950" />
-            <span>Konsultasi Gratis via WhatsApp</span>
+            <span>Mulai Konsultasi</span>
           </button>
 
           <a

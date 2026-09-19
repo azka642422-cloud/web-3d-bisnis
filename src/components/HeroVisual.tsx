@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Heart, Sparkles, Music, Play, Layers } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, Sparkles, Play, Layers } from 'lucide-react';
 
 export function HeroVisual() {
-  const [activeTab, setActiveTab] = useState<'preview' | '3d'>('preview');
-  const [isHovered, setIsHovered] = useState(false);
-
   // Simulated floating tilt effect on mouse move
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -19,7 +18,7 @@ export function HeroVisual() {
     <div
       className="relative w-full max-w-lg mx-auto lg:max-w-none"
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => setMousePos({ x: 0, y: 0 })}
+      onMouseLeave={() => !prefersReducedMotion && setMousePos({ x: 0, y: 0 })}
     >
       {/* Glow Backdrop */}
       <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-blue-600/10 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition duration-1000"></div>
@@ -41,7 +40,7 @@ export function HeroVisual() {
             <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
             <span className="ml-2 text-xs text-slate-400 font-mono tracking-wider">
-              lumina.gift/preview/our-story
+              contoh.link/hadiah/ceritamu
             </span>
           </div>
           <div className="flex items-center gap-2 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">

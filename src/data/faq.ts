@@ -3,7 +3,7 @@ import { FAQItem } from '../types';
 export const faqData: FAQItem[] = [
   {
     question: 'Web ini bisa dibuka di HP?',
-    answer: 'Ya, seluruh pengalaman web hadiah digital dirancang sepenuhnya responsif dan optimal untuk dibuka langsung melalui browser smartphone (Android & iOS).',
+    answer: 'Ya. Pengalaman web hadiah dirancang responsif untuk browser smartphone modern. Tampilan dan efek dapat disederhanakan pada perangkat tertentu agar pengalaman tetap nyaman.',
   },
   {
     question: 'Berapa foto yang bisa digunakan?',
@@ -19,7 +19,7 @@ export const faqData: FAQItem[] = [
   },
   {
     question: 'Apakah link bisa dibuat private?',
-    answer: 'Perlindungan privasi dengan PIN aman (Private PIN) sedang dalam tahap pengembangan dan akan segera tersedia pada pembaruan mendatang.',
+    answer: 'Fitur Private PIN masih dalam pengembangan dan belum tersedia pada versi awal. Saat fitur ini siap, perlindungan PIN akan diterapkan pada sistem gift, bukan sekadar pemeriksaan di tampilan frontend.',
   },
   {
     question: 'Berapa lama prosesnya?',

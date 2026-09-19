@@ -47,10 +47,11 @@ export function OccasionCategories({ onSelectOccasion }: OccasionCategoriesProps
           {occasions.map((occ) => {
             const IconEl = getIconComponent(occ.icon);
             return (
-              <div
+              <button
+                type="button"
                 key={occ.id}
                 onClick={() => onSelectOccasion(occ.name)}
-                className="group bg-[#111726]/80 hover:bg-[#161f36] border border-slate-800 hover:border-amber-500/40 rounded-2xl p-6 transition-all duration-300 cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between"
+                className="group text-left bg-[#111726]/80 hover:bg-[#161f36] border border-slate-800 hover:border-amber-500/40 rounded-2xl p-6 transition-all duration-300 cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between"
               >
                 <div>
                   <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-5 group-hover:scale-110 group-hover:bg-amber-500/20 transition-all">
@@ -67,7 +68,7 @@ export function OccasionCategories({ onSelectOccasion }: OccasionCategoriesProps
                 <div className="flex items-center text-xs font-semibold text-amber-400 group-hover:text-amber-300">
                   <span>Pilih Momen Ini &rarr;</span>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>

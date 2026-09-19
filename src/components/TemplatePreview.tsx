@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Eye, Check, Sparkles, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Eye, Check, Sparkles, X, Heart, GraduationCap, Cake, Gem } from 'lucide-react';
 import { templates } from '../data/templates';
 import { Template } from '../types';
 
@@ -10,16 +10,91 @@ interface TemplatePreviewProps {
 export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
   const [modalTemplate, setModalTemplate] = useState<Template | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const previewDialogRef = useRef<HTMLDivElement>(null);
+  const previewCloseRef = useRef<HTMLButtonElement>(null);
+  const toastTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!modalTemplate) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => previewCloseRef.current?.focus());
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setModalTemplate(null);
+      if (event.key !== 'Tab' || !previewDialogRef.current) return;
+      const focusable = Array.from(
+        previewDialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
+  }, [modalTemplate]);
 
   const handlePreviewClick = (tpl: Template) => {
     setModalTemplate(tpl);
+  };
+
+  const previewIcon = (id: string) => {
+    if (id === 'sweet-memories') return <Heart className="w-8 h-8" />;
+    if (id === 'graduation-night') return <GraduationCap className="w-8 h-8" />;
+    if (id === 'birthday-universe') return <Cake className="w-8 h-8" />;
+    return <Gem className="w-8 h-8" />;
+  };
+
+  const previewPhotos: Record<string, { src: string; alt: string }[]> = {
+    'sweet-memories': [
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan saat matahari terbenam' },
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan dalam suasana hangat' },
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh portrait untuk susunan galeri' },
+    ],
+    'graduation-night': [
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto wisuda' },
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pencapaian bersama orang terdekat' },
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto kenangan untuk cerita wisuda' },
+    ],
+    'birthday-universe': [
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh portrait untuk kejutan ulang tahun' },
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto kenangan bersama' },
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto perayaan' },
+    ],
+    'our-story': [
+      { src: 'https://images.unsplash.com/photo-1591604442449-ecc9943efabf?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan pernikahan' },
+      { src: 'https://images.unsplash.com/photo-1773845503159-6c074a99f15b?auto=format&fit=crop&w=900&q=80', alt: 'Contoh foto pasangan untuk perjalanan cerita' },
+      { src: 'https://images.unsplash.com/photo-1616701318247-e87eb43e79e3?auto=format&fit=crop&w=900&q=80', alt: 'Contoh portrait pelengkap cerita' },
+    ],
   };
 
   const handleChooseTemplate = (tplTitle: string) => {
     onSelectTemplate(tplTitle);
     setModalTemplate(null);
     setToastMessage(`Template "${tplTitle}" berhasil dipilih untuk konsultasi!`);
-    setTimeout(() => setToastMessage(null), 4000);
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => setToastMessage(null), 4000);
   };
 
   return (
@@ -28,7 +103,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
         
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 bg-amber-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-medium text-sm flex items-center gap-3 animate-fadeIn">
+          <div role="status" aria-live="polite" className="fixed bottom-6 right-6 z-50 bg-amber-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-medium text-sm flex items-center gap-3 animate-fadeIn">
             <Sparkles className="w-4 h-4" />
             <span>{toastMessage}</span>
           </div>
@@ -87,6 +162,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
               {/* Action Buttons */}
               <div className="p-6 pt-0 grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={() => handlePreviewClick(tpl)}
                   className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-slate-700"
                 >
@@ -94,6 +170,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
                   <span>Lihat Preview</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleChooseTemplate(tpl.title)}
                   className="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-amber-500/20"
                 >
@@ -109,12 +186,25 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
 
       {/* Modal Demo Segera Hadir */}
       {modalTemplate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-[#131b2e] border border-amber-500/30 rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setModalTemplate(null);
+          }}
+        >
+          <div
+            ref={previewDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="template-preview-title"
+            className="relative w-full max-w-md bg-[#131b2e] border border-amber-500/30 rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl"
+          >
             <button
+              ref={previewCloseRef}
+              type="button"
               onClick={() => setModalTemplate(null)}
               className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800/80"
-              aria-label="Close modal"
+              aria-label="Tutup preview template"
             >
               <X className="w-5 h-5" />
             </button>
@@ -123,34 +213,62 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
               <Sparkles className="w-6 h-6" />
             </div>
 
-            <h3 className="text-2xl font-bold font-['Playfair_Display',serif] text-white mb-2">
+            <h3 id="template-preview-title" className="text-2xl font-bold font-['Playfair_Display',serif] text-white mb-2">
               {modalTemplate.title}
             </h3>
             <p className="text-xs text-amber-300 font-mono mb-4">
               {modalTemplate.suitableFor}
             </p>
 
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
-              {modalTemplate.description}
-            </p>
+            <div className={`relative overflow-hidden rounded-2xl p-5 mb-5 ${modalTemplate.bgGradient} border border-white/10`}>
+              <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${modalTemplate.accentColor}`}></div>
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-300">
+                  {previewIcon(modalTemplate.id)}
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Contoh tampilan</p>
+                  <p className="font-semibold text-white">{modalTemplate.visualTheme}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {(previewPhotos[modalTemplate.id] ?? previewPhotos['sweet-memories']).map((photo, index) => (
+                  <div
+                    key={photo.src + index}
+                    className={`aspect-[4/5] overflow-hidden rounded-lg border border-white/15 shadow-lg ${index === 0 ? 'rotate-[-3deg]' : index === 1 ? 'translate-y-2' : 'rotate-[3deg]'}`}
+                  >
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed">{modalTemplate.description}</p>
+            </div>
 
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-6 text-center">
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-6">
               <span className="text-sm font-semibold text-amber-200">
-                ✨ Demo interaktif lengkap segera hadir!
+                Preview konsep template
               </span>
-              <p className="text-xs text-slate-400 mt-1">
-                Kamu sudah bisa memilih template ini untuk pembuatan hadiah digital personalmu sekarang.
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Preview ini menunjukkan arah visual dan suasana template. Foto, pesan, musik, dan detail animasi pada hasil akhir akan dipersonalisasi untuk penerima.
               </p>
             </div>
 
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={() => setModalTemplate(null)}
                 className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors"
               >
                 Tutup
               </button>
               <button
+                type="button"
                 onClick={() => handleChooseTemplate(modalTemplate.title)}
                 className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-500/20"
               >

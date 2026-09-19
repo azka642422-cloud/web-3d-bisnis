@@ -1,15 +1,16 @@
 import { Check, ShieldAlert, Sparkles } from 'lucide-react';
+import { pricingConfig } from '../config/pricing';
 
 export function WhatsIncluded() {
   const inclusions = [
     { title: 'Web personal', desc: 'Situs web interaktif khusus untuk penerima hadiah' },
     { title: 'Animasi interaktif', desc: 'Transisi halus, galeri mengambang, dan efek sinematik' },
-    { title: 'Maksimal 7 foto', desc: 'Koleksi foto pilihan terbaik untuk paket promo awal' },
+    { title: `Maksimal ${pricingConfig.includedPhotos} foto`, desc: 'Koleksi foto pilihan terbaik untuk paket promo awal' },
     { title: 'Pesan/ucapan personal', desc: 'Teks surat cinta atau ucapan mendalam dari hati' },
     { title: 'Background music', desc: 'Alunan melodi pengiring suasana yang hangat' },
     { title: 'Request backsound', desc: 'Konsultasi pilihan lagu atau musik khusus' },
     { title: 'Link personal', desc: 'Tautan unik siap dibagikan via WhatsApp' },
-    { title: 'Mobile friendly', desc: 'Optimal dan mulus dibuka di semua jenis smartphone' },
+    { title: 'Mobile friendly', desc: 'Dirancang responsif untuk browser smartphone modern' },
   ];
 
   return (
