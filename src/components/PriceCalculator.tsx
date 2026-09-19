@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Calculator, MessageCircle, Sliders, Sparkles } from 'lucide-react';
+import { MessageCircle, Sliders } from 'lucide-react';
 import { calculatePrice, formatIDR, pricingConfig } from '../config/pricing';
-import { siteConfig } from '../config/site';
 
 interface PriceCalculatorProps {
   onOrderWithDetails: (photoCount: number, estimatedPrice: number) => void;
@@ -12,11 +11,8 @@ export function PriceCalculator({ onOrderWithDetails }: PriceCalculatorProps) {
 
   const { estimatedPrice, additionalBlocks } = calculatePrice(photoCount);
 
-  const handleWhatsAppOrder = () => {
-    const text = encodeURIComponent(
-      `Halo, saya ingin memesan Web Hadiah 3D dengan rincian:\n- Jumlah Foto: ${photoCount} foto\n- Estimasi Harga: ${formatIDR(estimatedPrice)}\n\nMohon informasi selanjutnya untuk proses pembuatan.`
-    );
-    window.open(`https://wa.me/${siteConfig.whatsappNumber}?text=${text}`, '_blank');
+  const handleOrder = () => {
+    onOrderWithDetails(photoCount, estimatedPrice);
   };
 
   return (
@@ -109,11 +105,11 @@ export function PriceCalculator({ onOrderWithDetails }: PriceCalculatorProps) {
               </div>
 
               <button
-                onClick={handleWhatsAppOrder}
+                onClick={handleOrder}
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2 transition-all"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-950" />
-                <span>Pesan dengan Jumlah Ini</span>
+                <span>Lanjutkan Pesanan</span>
               </button>
             </div>
 
