@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Eye, Check, Sparkles, X } from 'lucide-react';
 import { templates } from '../data/templates';
 import { Template } from '../types';
@@ -10,6 +10,50 @@ interface TemplatePreviewProps {
 export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
   const [modalTemplate, setModalTemplate] = useState<Template | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const previewDialogRef = useRef<HTMLDivElement>(null);
+  const previewCloseRef = useRef<HTMLButtonElement>(null);
+  const toastTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!modalTemplate) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => previewCloseRef.current?.focus());
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setModalTemplate(null);
+      if (event.key !== 'Tab' || !previewDialogRef.current) return;
+      const focusable = Array.from(
+        previewDialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
+  }, [modalTemplate]);
 
   const handlePreviewClick = (tpl: Template) => {
     setModalTemplate(tpl);
@@ -19,7 +63,8 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
     onSelectTemplate(tplTitle);
     setModalTemplate(null);
     setToastMessage(`Template "${tplTitle}" berhasil dipilih untuk konsultasi!`);
-    setTimeout(() => setToastMessage(null), 4000);
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => setToastMessage(null), 4000);
   };
 
   return (
@@ -28,7 +73,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
         
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 bg-amber-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-medium text-sm flex items-center gap-3 animate-fadeIn">
+          <div role="status" aria-live="polite" className="fixed bottom-6 right-6 z-50 bg-amber-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-medium text-sm flex items-center gap-3 animate-fadeIn">
             <Sparkles className="w-4 h-4" />
             <span>{toastMessage}</span>
           </div>
@@ -109,12 +154,25 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
 
       {/* Modal Demo Segera Hadir */}
       {modalTemplate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-[#131b2e] border border-amber-500/30 rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setModalTemplate(null);
+          }}
+        >
+          <div
+            ref={previewDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="template-preview-title"
+            className="relative w-full max-w-md bg-[#131b2e] border border-amber-500/30 rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl"
+          >
             <button
+              ref={previewCloseRef}
+              type="button"
               onClick={() => setModalTemplate(null)}
               className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800/80"
-              aria-label="Close modal"
+              aria-label="Tutup preview template"
             >
               <X className="w-5 h-5" />
             </button>
@@ -123,7 +181,7 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
               <Sparkles className="w-6 h-6" />
             </div>
 
-            <h3 className="text-2xl font-bold font-['Playfair_Display',serif] text-white mb-2">
+            <h3 id="template-preview-title" className="text-2xl font-bold font-['Playfair_Display',serif] text-white mb-2">
               {modalTemplate.title}
             </h3>
             <p className="text-xs text-amber-300 font-mono mb-4">
@@ -145,12 +203,14 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
 
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={() => setModalTemplate(null)}
                 className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors"
               >
                 Tutup
               </button>
               <button
+                type="button"
                 onClick={() => handleChooseTemplate(modalTemplate.title)}
                 className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-500/20"
               >
