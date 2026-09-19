@@ -131,10 +131,11 @@ export function ConsultationModal({
           
           {/* Occasion Selection */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label htmlFor="consultation-occasion" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Pilih Momen / Occasion
             </label>
             <select
+              id="consultation-occasion"
               value={selectedOccasion}
               onChange={(e) => setSelectedOccasion(e.target.value)}
               className="w-full bg-[#0c1220] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
@@ -149,10 +150,11 @@ export function ConsultationModal({
 
           {/* Template Selection */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label htmlFor="consultation-template" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Pilihan Template
             </label>
             <select
+              id="consultation-template"
               value={selectedTemplate}
               onChange={(e) => setSelectedTemplate(e.target.value)}
               className="w-full bg-[#0c1220] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
@@ -168,7 +170,7 @@ export function ConsultationModal({
           {/* Photo Count */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label htmlFor="consultation-photo-count" className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
                 Jumlah Foto
               </label>
               <span className="text-xs text-amber-300 font-bold">
@@ -176,6 +178,7 @@ export function ConsultationModal({
               </span>
             </div>
             <input
+              id="consultation-photo-count"
               type="number"
               min="1"
               max="50"
@@ -187,10 +190,11 @@ export function ConsultationModal({
 
           {/* Soundtrack Request */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label htmlFor="consultation-soundtrack" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Request Backsound / Lagu (Opsional)
             </label>
             <input
+              id="consultation-soundtrack"
               type="text"
               placeholder="Contoh: Judul lagu atau artis favorit"
               value={soundtrackReq}
@@ -201,10 +205,11 @@ export function ConsultationModal({
 
           {/* Privacy Preference */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label htmlFor="consultation-privacy" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Preferensi Private / PIN (Segera Tersedia)
             </label>
             <select
+              id="consultation-privacy"
               value={privacyPref}
               onChange={(e) => setPrivacyPref(e.target.value)}
               className="w-full bg-[#0c1220] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
