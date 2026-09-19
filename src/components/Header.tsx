@@ -109,7 +109,7 @@ export function Header({ onOpenConsultation }: HeaderProps) {
                 }}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold text-sm shadow-md text-center"
               >
-                Pesan Sekarang via WhatsApp
+                Mulai Konsultasi
               </button>
             </div>
           </nav>
