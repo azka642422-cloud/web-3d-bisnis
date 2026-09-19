@@ -33,7 +33,7 @@ export default function App() {
     setConsultationModalOpen(true);
   };
 
-  const handleOrderWithDetails = (photoCount: number) => {
+  const handleOrderWithDetails = (photoCount: number, _estimatedPrice: number) => {
     setSelectedPhotoCount(photoCount);
     setConsultationModalOpen(true);
   };
