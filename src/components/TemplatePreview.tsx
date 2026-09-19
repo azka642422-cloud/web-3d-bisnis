@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Eye, Check, Sparkles, X } from 'lucide-react';
+import { Eye, Check, Sparkles, X, Heart, GraduationCap, Cake, Gem } from 'lucide-react';
 import { templates } from '../data/templates';
 import { Template } from '../types';
 
@@ -57,6 +57,13 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
 
   const handlePreviewClick = (tpl: Template) => {
     setModalTemplate(tpl);
+  };
+
+  const previewIcon = (id: string) => {
+    if (id === 'sweet-memories') return <Heart className="w-8 h-8" />;
+    if (id === 'graduation-night') return <GraduationCap className="w-8 h-8" />;
+    if (id === 'birthday-universe') return <Cake className="w-8 h-8" />;
+    return <Gem className="w-8 h-8" />;
   };
 
   const handleChooseTemplate = (tplTitle: string) => {
@@ -188,16 +195,31 @@ export function TemplatePreview({ onSelectTemplate }: TemplatePreviewProps) {
               {modalTemplate.suitableFor}
             </p>
 
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
-              {modalTemplate.description}
-            </p>
+            <div className={`relative overflow-hidden rounded-2xl p-5 mb-5 ${modalTemplate.bgGradient} border border-white/10`}>
+              <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${modalTemplate.accentColor}`}></div>
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-300">
+                  {previewIcon(modalTemplate.id)}
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Contoh tampilan</p>
+                  <p className="font-semibold text-white">{modalTemplate.visualTheme}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-2 mb-4" aria-hidden="true">
+                <div className="aspect-[4/5] rounded-lg bg-white/10 border border-white/10 rotate-[-3deg]"></div>
+                <div className="aspect-[4/5] rounded-lg bg-amber-300/10 border border-amber-300/20 translate-y-2"></div>
+                <div className="aspect-[4/5] rounded-lg bg-white/10 border border-white/10 rotate-[3deg]"></div>
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed">{modalTemplate.description}</p>
+            </div>
 
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-6 text-center">
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-6">
               <span className="text-sm font-semibold text-amber-200">
-                ✨ Demo interaktif lengkap segera hadir!
+                Preview konsep template
               </span>
-              <p className="text-xs text-slate-400 mt-1">
-                Kamu sudah bisa memilih template ini untuk pembuatan hadiah digital personalmu sekarang.
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Preview ini menunjukkan arah visual dan suasana template. Foto, pesan, musik, dan detail animasi pada hasil akhir akan dipersonalisasi untuk penerima.
               </p>
             </div>
 
