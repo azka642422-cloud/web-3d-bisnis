@@ -8,13 +8,6 @@ interface HeroProps {
 }
 
 export function Hero({ onOpenConsultation }: HeroProps) {
-  const handleWhatsAppHero = () => {
-    const text = encodeURIComponent(
-      `Halo, saya tertarik berkonsultasi mengenai pembuatan Web Hadiah 3D di ${siteConfig.brandName}.`
-    );
-    window.open(`https://wa.me/${siteConfig.whatsappNumber}?text=${text}`, '_blank');
-  };
-
   return (
     <section id="beranda" className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
       {/* Background radial lights */}
@@ -57,11 +50,11 @@ export function Hero({ onOpenConsultation }: HeroProps) {
               </a>
 
               <button
-                onClick={handleWhatsAppHero}
+                onClick={onOpenConsultation}
                 className="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-500/30 hover:border-amber-500/60 font-semibold text-base transition-all flex items-center justify-center gap-2.5 shadow-lg"
               >
                 <MessageCircle className="w-5 h-5 text-emerald-400" />
-                <span>Konsultasi via WhatsApp</span>
+                <span>Mulai Konsultasi</span>
               </button>
             </div>
 
