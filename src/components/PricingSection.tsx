@@ -9,12 +9,12 @@ export function PricingSection({ onOpenConsultation }: PricingSectionProps) {
   const features = [
     '1 Web hadiah digital interaktif',
     'Pilihan template sinematik',
-    'Maksimal 7 foto untuk paket awal',
+    `Maksimal ${pricingConfig.includedPhotos} foto untuk paket awal`,
     'Pesan atau surat cinta personal',
     'Animasi 3D & efek visual',
     'Background music & request backsound',
     'Link personal siap dibagikan',
-    'Optimal dibuka di semua HP',
+    'Responsif untuk browser smartphone modern',
   ];
 
   return (
